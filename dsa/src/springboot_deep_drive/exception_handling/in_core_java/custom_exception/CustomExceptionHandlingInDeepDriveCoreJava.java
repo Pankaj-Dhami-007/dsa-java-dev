@@ -1,0 +1,4 @@
+package springboot_deep_drive.exception_handling.in_core_java.custom_exception;
+
+public class CustomExceptionHandlingInDeepDriveCoreJava {
+}
