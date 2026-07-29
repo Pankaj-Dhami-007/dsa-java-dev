@@ -82,6 +82,11 @@ Programming did not start with AOP.
 
 It evolved gradually.
 
+A paradigm is a way of thinking or a style of solving a problem.
+A paradigm is an approach or model for writing programs.
+A paradigm tells us how to write code.
+
+
 Every new paradigm tried to solve problems that
 the previous paradigm could not solve.
 
@@ -177,9 +182,7 @@ With OOP
 
 
 Code reuse became easy.
-
 This was a revolutionary improvement.
-
 
 But...
 
@@ -312,8 +315,11 @@ Definition (Interview)
 
 ────────────────────────────────────────────────────────────────────
 
+ */
 
-**Aspect-Oriented Programming (AOP)**
+/**
+
+Aspect-Oriented Programming (AOP)
 
 is a programming paradigm that separates
 
@@ -340,7 +346,10 @@ to improve
 Simple Definition
 
 ────────────────────────────────────────────────────────────────────
+ **/
 
+
+/*
 
 Imagine you write logging code
 
@@ -374,20 +383,13 @@ the entire purpose of AOP.
 
 Imagine an Airport.
 
-
-
 Every passenger wants only one thing.
-
 
                     Catch Flight
 
-
-
 But before boarding,
 
-
 everyone goes through
-
 
             Identity Verification
 
@@ -429,32 +431,22 @@ Question
 Does every airline implement
 security separately?
 
-
 NO.
 
-
 The Airport performs those common tasks.
-
 
 Exactly similarly,
 
 
 EmployeeService
-
 CustomerService
-
 OrderService
-
 PaymentService
-
 
 should not implement Logging,
 Transactions and Security separately.
 
-
 AOP performs them centrally.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                    7. AOP IN ONE SENTENCE                                           ║
@@ -462,27 +454,24 @@ AOP performs them centrally.
 
 
 If someone asks in an interview
-
-
 "What is AOP?"
-
 
 You can answer
 
+ */
+
+/**
 
 ┌────────────────────────────────────────────────────────────────────────────────────┐
 │                                                                                    │
-│ **Aspect-Oriented Programming is a programming paradigm that allows us to**        │
-│ **separate cross-cutting concerns like logging, security, transaction**            │
-│ **management, caching and auditing from the core business logic.**                 │
+│ Aspect-Oriented Programming is a programming paradigm that allows us to        │
+│ separate cross-cutting concerns like logging, security, transaction            │
+│ management, caching and auditing from the core business logic.                 │
 │                                                                                    │
 └────────────────────────────────────────────────────────────────────────────────────┘
+ */
 
-
-This is a perfect interview answer.
-
-
-
+  /*
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                          PART 1 COMPLETE                                            ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
@@ -506,6 +495,7 @@ Next Part Covers
 
 */
 
+
 /*
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                          8. OOP vs AOP                                              ║
@@ -523,41 +513,27 @@ Instead,
 
             OOP + AOP = Complete Enterprise Application
 
-
-
 ┌────────────────────────────────────────────────────────────────────────────────────┐
 │                           OBJECT ORIENTED PROGRAMMING                              │
 └────────────────────────────────────────────────────────────────────────────────────┘
 
 OOP focuses on
-
         **Objects**
 
 It tries to answer
-
         "How should business entities be organized?"
 
 Example
 
 Employee
-
 Customer
-
 Order
-
 Product
-
 Invoice
-
 Department
-
 Each entity becomes a separate class.
 
-
-
 Example
-
-
 
                 Employee
 
@@ -582,52 +558,43 @@ Example
 Every object has
 
 ✔ State
-
 ✔ Behaviour
 
 
 
 OOP Principles
 
-
         Encapsulation
-
         Inheritance
-
         Polymorphism
-
         Abstraction
-
-
 
 These principles help organize business code.
 
+ */
+/**
 
+Object-Oriented Programming (OOP) is a programming paradigm that uses classes and objects
+to represent real-world entities. It groups related data and behavior into a single
+unit called an object, making the code organized, reusable, and easy to maintain.
 
+ */
+
+/*
 But...
-
 
 
 They DO NOT solve
 
 
 Logging
-
 Transactions
-
 Caching
-
 Security
-
 Auditing
-
 Exception Handling
 
-
-
 because these are not properties of any object.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                       WHAT DOES AOP FOCUS ON ?                                      ║
@@ -635,47 +602,33 @@ because these are not properties of any object.
 
 
 AOP focuses on
-
         **Aspects**
-
 instead of Objects.
 
+ */
 
+/**
 An Aspect represents
-
 a common functionality
-
 that should execute
-
 before
-
 after
-
 or around
-
 many business methods.
+ */
 
-
-
+/*
 Example
 
 
 Logging Aspect
-
 Security Aspect
-
 Audit Aspect
-
 Transaction Aspect
-
 Caching Aspect
-
 Monitoring Aspect
 
-
-
 Instead of adding logging
-
 inside Employee,
 
 Customer,
@@ -685,7 +638,6 @@ Order,
 Product,
 
 AOP keeps logging
-
 inside one place.
 
 
@@ -694,12 +646,7 @@ inside one place.
 ║                            OOP vs AOP DIAGRAM                                      ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-
-
                      WITHOUT AOP
-
-
-
              EmployeeService
 
       ┌──────────────────────────────┐
@@ -730,21 +677,11 @@ inside one place.
 
       └──────────────────────────────┘
 
-
-
 Every class contains
-
 duplicate code.
 
-
-
 ------------------------------------------------------------
-
-
-
                       WITH AOP
-
-
 
               Logging Aspect
 
@@ -752,23 +689,16 @@ duplicate code.
 
                      ▼
 
-
-
               Security Aspect
 
                      │
 
                      ▼
-
-
-
             Transaction Aspect
 
                      │
 
                      ▼
-
-
 
              EmployeeService
 
@@ -793,12 +723,8 @@ duplicate code.
 Business classes become
 
 clean
-
 small
-
 easy to understand.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                           OOP vs AOP COMPARISON                                    ║
@@ -831,12 +757,8 @@ easy to understand.
 **Remember**
 
 Every Spring Boot application uses OOP.
-
 Some Spring Boot applications additionally use AOP.
-
 AOP cannot exist without OOP.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                     9. IS AOP A JAVA FEATURE ?                                      ║
@@ -845,29 +767,11 @@ AOP cannot exist without OOP.
 
 Another famous interview question.
 
+Question -> Is AOP part of Java?
+Answer  -> NO.
 
-Question
-
-
-Is AOP part of Java?
-
-
-Answer
-
-
-NO.
-
-
-Java itself
-
-does NOT provide AOP.
-
-
-When Java was designed,
-
-it included
-
-
+Java itself does NOT provide AOP.
+When Java was designed, it included
 Classes
 
 Objects
@@ -886,24 +790,13 @@ Generics
 
 
 but
-
-
 AOP was NOT included.
-
-
 
 Instead,
 
-AOP is implemented
-
-using frameworks
-
-and libraries.
-
-
+AOP is implemented using frameworks and libraries.
 
 Examples
-
 
 AspectJ
 
@@ -913,18 +806,9 @@ JBoss AOP
 
 Guice AOP
 
-
-
 Therefore
-
-
 **AOP is NOT a Java language feature.**
-
-It is implemented
-
-using frameworks.
-
-
+It is implemented using frameworks.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                     10. THEN HOW DOES SPRING PROVIDE AOP ?                          ║
@@ -932,18 +816,10 @@ using frameworks.
 
 
 Spring provides AOP
-
 using
-
-
-                 PROXIES
-
-
+                PROXIES
 Don't worry if Proxy is new.
-
-
 The next chapters will explain
-
 everything about
 
 Dynamic Proxy
@@ -958,14 +834,12 @@ BeanPostProcessor
 
 Internal Workflow
 
-
-
 For now,
 
+ */
+/**
+
 remember only one thing.
-
-
-
 ┌────────────────────────────────────────────────────────────────────────────────────┐
 │                                                                                    │
 │      Spring NEVER modifies your original class directly.                           │
@@ -975,54 +849,27 @@ remember only one thing.
 │                                                                                    │
 └────────────────────────────────────────────────────────────────────────────────────┘
 
+ */
 
 
+
+/*
 Example
-
-
-
 Your Class
-
-
-
                 EmployeeService
-
-
-
                      │
-
-
-
 Spring Creates
-
-
-
                 EmployeeServiceProxy
-
-
-
 The proxy decides
-
-
 Should Logging execute?
-
 Should Transaction start?
-
 Should Security execute?
 
-Then
-
-calls
-
-EmployeeService.
-
-
+Then calls EmployeeService.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                    PROXY VISUALIZATION                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
-
 
 Client
 
@@ -1058,23 +905,16 @@ Database
 
 
 
+ */
+/**
+
 Notice
+Client never talks directly to EmployeeService. It communicates with the Proxy.
 
-Client never talks directly
-
-to EmployeeService.
-
-It communicates
-
-with the Proxy.
-
-
-
+ */
+/*
 This single concept explains almost
-
 70% of Spring AOP.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                        11. REAL PROJECT EXAMPLE                                    ║
@@ -1083,106 +923,44 @@ This single concept explains almost
 
 Imagine your HRMS project.
 
-
-EmployeeService
-
-
-contains
-
+EmployeeService contains
 
 saveEmployee()
-
 updateEmployee()
-
 deleteEmployee()
 
-
-
-AttendanceService
-
-
-contains
-
+AttendanceService contains
 
 markAttendance()
-
 approveAttendance()
 
-
-
-LeaveService
-
-
-contains
-
+LeaveService contains
 
 applyLeave()
-
 cancelLeave()
 
-
-
 Manager says
-
-
 "We need execution time
 for EVERY service method."
 
-
-Question
-
-
-Will you modify
-
-
+Question Will you modify
 saveEmployee()
-
 updateEmployee()
-
 deleteEmployee()
-
 applyLeave()
-
 cancelLeave()
-
 approveAttendance()
-
-markAttendance()
-
-
-individually?
-
-
+markAttendance()                                  individually?
 
 Absolutely NOT.
 
-
-
 Instead,
+create one Performance Aspect.
 
-create one
+It automatically executes for all service methods.
 
-Performance Aspect.
-
-
-
-It automatically executes
-
-for all service methods.
-
-
-
-One class.
-
-
-
-Hundreds of methods covered.
-
-
-
+One class. Hundreds of methods covered.
 That is the real power of AOP.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                               PART 2 COMPLETE                                      ║
@@ -1221,11 +999,7 @@ Many developers think
 
 **This is WRONG.**
 
-Spring AOP and AspectJ are related,
-
-but they are NOT the same.
-
-
+Spring AOP and AspectJ are related, but they are NOT the same.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                           WHAT IS ASPECTJ ?                                        ║
@@ -1233,100 +1007,65 @@ but they are NOT the same.
 
 
 AspectJ is
-
         **A complete AOP framework**
-
 created by
-
                 Xerox PARC
-
 long before Spring Boot became popular.
 
 
 It provides
 
 ✔ Complete AOP
-
 ✔ Compile Time Weaving
-
 ✔ Load Time Weaving
-
 ✔ Runtime Weaving
-
 ✔ Bytecode Modification
-
 ✔ Constructor Interception
-
 ✔ Field Access Interception
-
 ✔ Private Method Interception
-
 ✔ Static Method Interception
 
-
-
 AspectJ is considered
-
 the **reference implementation**
-
 of Aspect-Oriented Programming.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                        WHAT IS SPRING AOP ?                                         ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 
+ */
+
+/**
 Spring AOP is
-
 NOT
-
 a complete implementation of AOP.
-
 
 Instead,
 
 Spring provides
-
 a lightweight AOP framework
-
 built on top of
-
                 **Proxy Objects**
-
-
-
 Instead of modifying bytecode,
-
 Spring simply creates
-
 another object
-
 called
-
         Proxy
-
 and executes extra logic
-
 before
-
 after
-
 or around
-
 your methods.
+ */
 
-
+/*
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                     HOW BOTH APPROACHES WORK                                       ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-
-
 AspectJ
-
 
         Source Code
 
@@ -1342,14 +1081,10 @@ AspectJ
 
       Final Compiled Class
 
-
-
 -----------------------------------------------------------
 
 
-
 Spring AOP
-
 
 
         Source Code
@@ -1372,19 +1107,17 @@ Spring AOP
 
       Client Uses Proxy
 
-
-
+ */
+/**
 **Important**
 
 AspectJ changes the class.
-
 Spring creates another class.
-
-
-
 This is the biggest architectural difference.
 
+ */
 
+/*
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                       FEATURE COMPARISON                                            ║
@@ -1421,52 +1154,32 @@ This is the biggest architectural difference.
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 
-Spring Framework was designed with
-
-Simplicity
-
-as one of its major goals.
-
+Spring Framework was designed with Simplicity as one of its major goals.
 
 Using Proxy Objects means
 
 ✔ No bytecode modification
-
 ✔ No special compiler
-
 ✔ No JVM configuration
-
 ✔ Easy debugging
-
 ✔ Easy integration
-
 ✔ Lightweight
 
-
-
-For 95% of enterprise applications,
-
-Proxy-based AOP is more than enough.
-
-
+For 95% of enterprise applications, Proxy-based AOP is more than enough.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                     REAL LIFE ANALOGY                                               ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 
+ */
+
+/**
 Imagine
 
-You hire a Personal Assistant.
-
-
-Whenever someone wants to meet you,
-
-they first meet
-
-your assistant.
-
-
+You hire a Personal Assistant. Whenever someone wants to meet you, they first meet your assistant.
+ */
+/*
                  Client
 
                     │
@@ -1494,34 +1207,14 @@ your assistant.
                   You
 
 
-
-Did anyone modify YOU?
-
-NO.
-
-They simply added
-
-another layer
-
-before reaching you.
-
-
+Did anyone modify YOU?   NO.
+They simply added another layer before reaching you.
 Spring Proxy works exactly like this.
 
 
-
-AspectJ is different.
-
-
-Instead of hiring an assistant,
-
-AspectJ changes
-
-YOUR OWN BEHAVIOUR.
-
+AspectJ is different. Instead of hiring an assistant,
+AspectJ changes YOUR OWN BEHAVIOUR.
 It modifies the class itself.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                13. WHERE IS SPRING AOP USED INTERNALLY ?                            ║
@@ -1529,9 +1222,7 @@ It modifies the class itself.
 
 
 Most developers use Spring AOP
-
 without even realizing it.
-
 
 The following Spring annotations internally use
 
@@ -1580,24 +1271,14 @@ The following Spring annotations internally use
 
 
 Method Security
-
         @PreAuthorize()
-
         @PostAuthorize()
-
 also rely on proxy-based interception.
-
-
 
 **Remember**
 
-Every time you use
-
-@Transactional
-
+Every time you use @Transactional
 Spring creates a proxy.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                 EXAMPLE : @Transactional                                            ║
@@ -1606,9 +1287,7 @@ Spring creates a proxy.
 
 Suppose
 
-
 @Service
-
 EmployeeService
 
 {
@@ -1618,29 +1297,19 @@ EmployeeService
 }
 
 
-
 You write
 
 
 @Transactional
-
 public void saveEmployee(){}
 
 
 
 Question
 
-Did Spring change your method?
+Did Spring change your method?   NO.
 
-
-NO.
-
-
-Spring created
-
-
-EmployeeServiceProxy
-
+Spring created  EmployeeServiceProxy
 
 
 Flow
@@ -1672,11 +1341,76 @@ Commit
 
 Return
 
-
-
 This is AOP.
 
+You
 
+ │
+
+ ▼
+
+Proxy
+ │
+ ├── Start Transaction
+ │
+ ├── Call Actual Method ✅
+ │
+ ├── Commit Transaction
+ │
+ ▼
+Return
+
+The actual method is still executed.
+The proxy only adds extra steps before and/or after it.
+
+ */
+
+
+/**
+ * Q: When is the proxy created?
+
+The proxy is created during Spring application startup, when the Application Context initializes the beans.
+ If Spring detects that a bean requires AOP (for example, because of @Transactional or an aspect),
+ it creates a proxy for that bean and registers the proxy in the Spring container.
+
+ During startup:
+ Step 1 -> Spring creates the actual object.  Actual EmployeeService
+
+ Step 2 -> Spring creates a proxy around it.
+
+ EmployeeServiceProxy
+ │
+ ▼
+ Actual EmployeeService
+
+ Step 3 ->When another bean asks for EmployeeService, Spring gives the proxy, not the actual object.
+
+ Q: Why does the controller call the proxy instead of the service?
+ Because Spring injects the proxy bean into the controller, not the original service bean. Therefore,
+ when the controller calls employeeService.saveEmployee(), the call first goes to the proxy,
+ which executes the AOP logic (such as starting a transaction or logging) and then
+ invokes the actual EmployeeService method.
+ */
+
+
+/**
+ *
+ * The proxy is created when the Spring Application Context starts, not when the method is called.
+ * Spring actually stores EmployeeServiceProxy instead of exposing the original EmployeeService bean directly.
+ * The proxy internally holds a reference to the real object.
+ *
+ * @Autowired
+ *     private EmployeeService employeeService;
+ *
+ *     here Spring injects the proxy.
+ *
+ *
+Yes. Spring AOP does not replace the original method. It creates a proxy that intercepts the method call,
+executes additional logic (such as logging or transaction management), invokes the original method,
+and then performs any required post-processing before returning the result.
+ */
+
+/*
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                     14. ADVANTAGES OF AOP                                           ║
@@ -1687,19 +1421,14 @@ Using AOP provides many benefits.
 
 
 ✔ Cleaner Code
-
 Business logic becomes very small.
-
 
 -------------------------------------------------------
 
 
 ✔ Less Code Duplication
-
 Write once.
-
 Execute everywhere.
-
 
 -------------------------------------------------------
 
@@ -1707,31 +1436,21 @@ Execute everywhere.
 ✔ Better Maintainability
 
 Need to change logging?
-
 Modify only one Aspect.
-
 
 -------------------------------------------------------
 
 
 ✔ Better Reusability
 
-One aspect
-
-can work
-
-for hundreds of classes.
-
+One aspect can work for hundreds of classes.
 
 -------------------------------------------------------
 
 
 ✔ Centralized Security
 
-Security logic
-
-stays in one place.
-
+Security logic stays in one place.
 
 -------------------------------------------------------
 
@@ -1739,52 +1458,114 @@ stays in one place.
 ✔ Better Monitoring
 
 Execution Time
-
 Memory Usage
-
 API Count
 
 can be monitored centrally.
 
 
+ */
+/**
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                      REAL PROJECT BENEFITS                                          ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
+ */
+/*
+Example 1: Method Entry/Exit Logging
+
+Suppose your company has 420 APIs.
+
+Manager says:
+
+"Log every method entry and exit."
+
+Without AOP:
+
+public void saveEmployee() {
+    log.info("Entering saveEmployee()");
+    ...
+    log.info("Exiting saveEmployee()");
+}
+You add this to 420 methods.
 
 
-Suppose
+With AOP:
 
-your company has
+@Before(...)
+public void before() {
+    log.info("Entering Method");
+}
+
+@After(...)
+public void after() {
+    log.info("Exiting Method");
+}
+Write it once.   Done.
 
 
-420 REST APIs.
+Example 2: Performance Logging
 
+Manager says:
 
-Manager says
-
-
-"We need Request Id logging."
-
+"Measure execution time of every service method."
 
 Without AOP
 
+long start = System.currentTimeMillis();
 
-Modify
+saveEmployee();
 
-420 APIs.
+long end = System.currentTimeMillis();
+
+log.info(end - start);
+Repeat in hundreds of methods.
+
 
 
 With AOP
 
+@Around(...)
+public Object measureTime(...) {
+    ...
+}
 
-Modify
+Write once.
 
-ONE Aspect.
 
+
+Example 3: Exception Logging
+
+Manager says:
+
+"Whenever any service throws an exception, log it."
+
+Without AOP
+
+try {
+
+}
+catch(Exception e){
+    log.error(...);
+}
+
+Repeat everywhere.
+
+
+
+With AOP
+
+@AfterThrowing(...)
+
+Write once.
 
 Done.
 
+
+Example 4: Audit Logging
+
+Without AOP
+log.info("User {} updated employee {}", userId, empId);
 
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
@@ -1792,16 +1573,10 @@ Done.
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 
-A good Aspect
-
-usually replaces
-
+A good Aspect usually replaces
 hundreds
-
 or even thousands
-
 of duplicate code blocks.
-
 
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
@@ -1810,17 +1585,11 @@ of duplicate code blocks.
 
 
 Next Part
-
 ✔ Disadvantages
-
 ✔ When NOT to use AOP
-
 ✔ Common Misconceptions
-
 ✔ Interview Questions
-
 ✔ Chapter Summary
-
 ✔ Next Chapter Preview
 
 */

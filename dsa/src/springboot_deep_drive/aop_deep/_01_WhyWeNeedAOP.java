@@ -608,6 +608,19 @@ Definition:
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 
+A cross-cutting concern is a reusable piece of functionality that is shared across multiple
+classes or modules without being part of their primary responsibility.
+
+Cross-cutting concerns are common functionalities shared across multiple modules of an application.
+They are technical concerns that are separate from the application's core business logic.
+They cut across different layers or components of an application, causing code duplication if implemented directly in each class.
+Spring AOP isolates cross-cutting concerns into aspects, keeping business logic clean and maintainable.
+
+A cross-cutting concern is a common functionality that is required by multiple classes or
+modules of an application but is not part of their core business logic.
+Examples include logging, security, transaction management, caching, and exception handling.
+Instead of implementing it repeatedly in every class, it is separated from
+the business logic to improve code reusability and maintainability.
 Examples:
 
     ┌─────────────────────────┐

@@ -1,8 +1,164 @@
 package springboot_deep_drive.aop_deep;
 
+
+/*
+Decorator and  Proxy design pattern
+
+They look almost identical because both wrap another object.
+But their intent (purpose) is different. In design patterns, intent matters more than structure.
+
+Let's compare.
+
+                                     Structurally (Code)
+
+-------- Decorator
+
+Client
+   │
+   ▼
+LoggingDecorator
+   │
+   ▼
+EmployeeService
+
+---------- Proxy
+
+Client
+   │
+   ▼
+EmployeeServiceProxy
+   │
+   ▼
+EmployeeService
+
+Looks almost identical.
+Both implement the same interface.
+Both hold a reference to the target.
+Both delegate the call.
+So structure is almost the same.
+
+Difference is WHY they exist.
+
+Decorator
+
+Purpose:  Add new behavior/features to an object.
+Each decorator adds new functionality.
+The object's behavior is enhanced.
+
+Proxy
+
+Purpose: Control access to an object.
+
+
+They have a very similar structure because both wrap another object and implement the same interface.
+The difference lies in their intent. A Decorator is used to add or extend an object's behavior dynamically,
+ while a Proxy is used to control access to the target object by performing tasks such as security checks,
+  transaction management, lazy loading, or remote communication before delegating the call.
+  Spring AOP uses the Proxy Pattern because its primary goal is to intercept and control method invocations.
+ */
 public class _03_AOPTerminologies {
 
 }
+// Can logging be implemented using the Decorator Pattern instead of AOP?
+// ans
+// Yes. The Decorator Pattern can add logging without modifying the target class by wrapping
+// it with another object. In fact, Spring AOP proxies work on a similar idea—they wrap
+// the target object and intercept method calls. The key difference is that
+// decorators are created manually, whereas Spring automatically generates proxies at runtime,
+// making the solution more scalable and easier to maintain for large applications.
+
+// Concern = An area of interest or responsibility in an application.
+/*
+Real-Life Example
+
+Imagine a hospital. The hospital has different concerns (areas of responsibility):
+
+Patient Treatment
+Billing
+Security
+Cleaning
+Reception
+Each is a concern because it is responsible for a specific part of the hospital.
+
+
+Software Example
+
+An application has different concerns:
+Application
+│
+├── User Registration
+├── Order Processing
+├── Payment
+├── Logging
+├── Security
+├── Transaction Management
+└── Exception Handling
+
+Each of these is a concern (an area of responsibility).
+
+Types of Concerns
+1. Core Concern (Business Concern) , vertical cencern
+These are the main purpose of the application.
+belongs to a specific module or feature of the application.
+The code that solves the business problem.
+Each module has its own business logic.
+
+2. Cross-Cutting Concern  , infra logic
+These support many core concerns.
+These are called Cross-Cutting Concerns because they are needed across multiple modules.
+These are not business features.
+They provide infrastructure for the application.
+
+Why are they called Infrastructure Concerns?
+
+Because they support the application just like infrastructure supports a city.
+
+Example:
+
+A city has:
+
+Schools
+Hospitals
+Banks
+Offices
+
+All of them need:
+
+Electricity ⚡
+Roads 🛣️
+Water 💧
+Internet 🌐
+
+Electricity is not the business of a hospital.
+Roads are not the business of a bank.
+They are infrastructure.
+
+Business logic stays inside one module (vertical).
+Infrastructure logic is shared across all modules (cross-cutting).
+
+                    APPLICATION
+
+         Vertical Concerns (Business Logic)
+
+      User Module      Order Module      Payment Module
+      ------------     ------------      --------------
+      Register         Place Order       Pay Bill
+      Login            Cancel Order      Refund
+
+
+      Infrastructure (Cross-Cutting) Concerns
+
+           Logging
+           Security
+           Transactions
+           Caching
+           Exception Handling
+ */
+
+/**
+A concern is a specific area of responsibility or functionality in a software application.
+It can be either a core business concern or a cross-cutting concern.
+ */
 
 /**
  * ┌────────────────────────────────────────────────────────────────────────────────────┐
@@ -30,93 +186,149 @@ public class _03_AOPTerminologies {
 Imagine you are giving an interview.
 
 Interviewer asks
-
         "What is an Aspect?"
-
 You answer
-
         "Logging."
 
 Interviewer asks
-
         "What is Advice?"
 
 You answer
-
         "Logging."
 
 Interviewer asks
-
         "What is Pointcut?"
 
 You answer
-
         "Logging."
 
 Everything becomes Logging.
 
 This is one of the biggest mistakes beginners make.
-
 Every terminology has a completely different meaning.
-
 If these terminologies are not clear,
-
 understanding Spring AOP internals becomes almost impossible.
-
-
 
 ┌────────────────────────────────────────────────────────────────────────────────────┐
 │                         Relationship Between Terminologies                          │
 └────────────────────────────────────────────────────────────────────────────────────┘
 
-
-                      Aspect
-
-                        │
-
-          Contains Multiple Advices
-
-                        │
-
-                        ▼
-
-                    Advice
-
-                        │
-
-         Executes At Join Point
-
-                        │
-
-                        ▼
-
-                   Join Point
-
-                        │
-
-        Selected By Pointcut
-
-                        │
-
-                        ▼
-
-                  Target Method
-
-                        │
-
-                        ▼
-
-                  Target Object
+                        ┌──────────────────────────────┐
+                        │           ASPECT             │
+                        │ (e.g., LoggingAspect)        │
+                        └──────────────┬───────────────┘
+                                       │
+                    Contains one or more Advices
+                                       │
+              ┌────────────────────────┼────────────────────────┐
+              │                        │                        │
+              ▼                        ▼                        ▼
+      @Before Advice           @After Advice           @Around Advice
+              │                        │                        │
+              └────────────────────────┼────────────────────────┘
+                                       │
+                        Executes at a Join Point
+                                       │
+                                       ▼
+                        ┌───────────────────────────┐
+                        │        JOIN POINT         │
+                        │ A method execution point  │
+                        └──────────────┬────────────┘
+                                       ▲
+                                       │
+                          Selected by Pointcut
+                                       │
+                        ┌──────────────┴────────────┐
+                        │         POINTCUT          │
+                        │ execution(* service.*.*) │
+                        └──────────────┬────────────┘
+                                       │
+                                       ▼
+                        ┌───────────────────────────┐
+                        │       TARGET METHOD       │
+                        │     saveEmployee()        │
+                        └──────────────┬────────────┘
+                                       │
+                                Belongs to
+                                       │
+                                       ▼
+                        ┌───────────────────────────┐
+                        │       TARGET OBJECT       │
+                        │     EmployeeService       │
+                        └───────────────────────────┘
 
 
 
 **Remember**
 
 Don't try to memorize this diagram.
-
 By the end of this chapter,
-
 it will become completely natural.
+
+
+                   @Aspect
+             (LoggingAspect)
+                     │
+                     ▼
+        +-------------------------+
+        |        Pointcut         |
+        | execution(* service.*)  |
+        +-----------+-------------+
+                    │
+        Selects Matching Join Points
+                    │
+                    ▼
+        +-------------------------+
+        |      Join Point         |
+        | saveEmployee() Method   |
+        +-----------+-------------+
+                    │
+          Advice executes here
+                    │
+      ┌─────────────┼─────────────┐
+      │             │             │
+      ▼             ▼             ▼
+   @Before       @Around       @After
+      │             │             │
+      └─────────────┼─────────────┘
+                    │
+                    ▼
+        +-------------------------+
+        |      Target Method      |
+        |     saveEmployee()      |
+        +-----------+-------------+
+                    │
+                    ▼
+        +-------------------------+
+        |      Target Object      |
+        |    EmployeeService      |
+        +-------------------------+
+
+
+
+
+simple -
+
+                 ASPECT
+                    │
+     ┌──────────────┴──────────────┐
+     │                             │
+ Contains Pointcuts         Contains Advices
+     │                             │
+     └──────────────┬──────────────┘
+                    │
+          Pointcut selects
+                    │
+               JOIN POINT
+          (Method Execution)
+                    │
+          Advice executes here
+                    │
+                    ▼
+             TARGET METHOD
+                    │
+                    ▼
+             TARGET OBJECT
 
 
 
@@ -124,80 +336,36 @@ it will become completely natural.
 ║                             1. WHAT IS AN ASPECT ?                                  ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-
-
-This is probably
-
-the MOST IMPORTANT
-
-AOP terminology.
-
-
-
+This is probably the MOST IMPORTANT AOP terminology.
 Official Definition
 
 
-**An Aspect is a class that contains cross-cutting concerns.**
-
+ */
+/**
+An Aspect is a class that contains cross-cutting concerns.
+ One Aspect can contain multiple Advices.
 
 Simple Definition
+An Aspect is simply a normal Java class whose responsibility is NOT business logic.
+Instead, it contains common functionality that should execute for multiple business methods.
 
-
-An Aspect is simply
-
-a normal Java class
-
-whose responsibility is
-
-NOT
-
-business logic.
-
-Instead,
-
-it contains
-
-common functionality
-
-that should execute
-
-for multiple business methods.
-
-
-
+ */
+/*
 Examples
 
 
 Logging
-
 Security
-
 Performance Monitoring
-
 Transactions
-
 Caching
-
 Auditing
-
 Notification
-
 Retry Logic
 
 
-
-These functionalities
-
-are called
-
-Cross-Cutting Concerns.
-
-The class that contains them
-
-is called
-
-                Aspect.
-
+These functionalities are called Cross-Cutting Concerns.
+The class that contains them is called Aspect.
 
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
@@ -207,27 +375,17 @@ is called
 
 Imagine a Hospital.
 
-
 Doctors belong to different departments.
 
 
 Cardiology
-
 Neurology
-
 Orthopedics
-
 Emergency
-
 ENT
-
 Pediatrics
 
-
-But every patient
-
-first goes through
-
+But every patient first goes through
 
 Registration
 
@@ -253,36 +411,17 @@ Doctor Consultation
 
 Notice something?
 
+Registration is required for every department.
+Instead of every doctor creating patient registration,
 
-Registration
+the hospital has one Registration Department.
 
-is required
-
-for every department.
-
-
-Instead of every doctor
-
-creating patient registration,
-
-the hospital has
-
-one Registration Department.
-
-
-Registration Department
-
-is like an
+Registration Department is like an
 
 Aspect.
 
 
-Every Doctor
-
-is like
-
-a Business Service.
-
+Every Doctor is like a Business Service.
 
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
@@ -294,55 +433,28 @@ Suppose your HRMS project contains
 
 
 EmployeeService
-
 AttendanceService
-
 LeaveService
-
 PayrollService
-
 DepartmentService
-
 HolidayService
-
-
 
 Every service requires
 
-
 Logging
-
 Execution Time
-
 Exception Logging
-
 Audit
 
-
-
 Should every service
-
 implement logging separately?
-
 
 NO.
 
-
-Instead create
-
-
-LoggingAspect
-
-
-which automatically logs
-
-every service method.
-
-
+Instead create LoggingAspect
+which automatically logs every service method.
 
 ASCII Diagram
-
-
 
                   LoggingAspect
 
@@ -357,50 +469,23 @@ ASCII Diagram
 EmployeeService  LeaveService   AttendanceService
 
 
-
-One Aspect
-
-works for
-
-hundreds
-
-of methods.
-
-
+One Aspect works for hundreds of methods.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                   WHAT DOES AN ASPECT CONTAIN ?                                     ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-
 An Aspect does NOT directly execute.
 
 
-Instead,
-
-it contains
-
+Instead, it contains
 
                 Advice
-
-
 Think like this
-
-
-Aspect
-
-is a Container.
-
-
-Advice
-
-is the actual logic.
-
-
+Aspect is a Container.
+Advice is the actual logic.
 
 Diagram
-
-
 
                  LoggingAspect
 
@@ -424,77 +509,38 @@ Diagram
 
 
 
-So
-
-
-Aspect
-
-contains
-
-Advice.
-
-
+So Aspect contains Advice.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                        2. WHAT IS ADVICE ?                                          ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-
-
-Official Definition
-
-
-**Advice is the action performed by an Aspect at a particular Join Point.**
-
+ */
+ /**
+ Definition
+Advice is the action performed by an Aspect at a particular Join Point.
 
 Simple Definition
-
-
-Advice is
-
-the actual code
-
-that Spring executes.
-
-
+Advice is the actual code that Spring executes before, after, or around a target method.
 
 Think like this
+Aspect is the class. Advice is the method.
+or Advice is the method inside an Aspect that contains the cross-cutting logic.
 
-
-Aspect
-
-is the class.
-
-
-Advice
-
-is the method.
-
-
-
+Advice is the action or code executed by an Aspect at a specific Join Point. In Spring AOP,
+an advice is a method inside an Aspect that contains cross-cutting logic,
+such as logging, transaction handling, or security checks, and it executes before, after, or around
+the target method.
+ */
+/*
 For example
 
-
-LoggingAspect
-
-
-
-contains
-
-
+LoggingAspect contains
 beforeLogging()
-
 afterLogging()
-
 measureExecutionTime()
 
-
-
-These methods are
-
-Advices.
-
-
+These methods are Advices.
 
 ASCII Representation
 
@@ -517,33 +563,22 @@ ASCII Representation
       └──────────────────────┘
 
 
-Every method
-
-inside Aspect
-
-is an Advice.
-
-
+Every method inside Aspect is an Advice.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                    REAL SPRING BOOT EXAMPLE                                         ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-
-
 @Aspect
-
 public class LoggingAspect{
 
         @Before(...)
-
         public void beforeLog(){
 
         }
 
 
         @After(...)
-
         public void afterLog(){
 
         }
@@ -551,135 +586,84 @@ public class LoggingAspect{
 }
 
 
-Here
-
-
-LoggingAspect
-
-is the Aspect.
-
-
-beforeLog()
-
-is an Advice.
-
-
-afterLog()
-
-is another Advice.
-
-
+Here LoggingAspect is the Aspect.
+beforeLog() is an Advice.
+afterLog() is another Advice.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                    DIFFERENT TYPES OF ADVICE                                        ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
-
 Spring supports
-
 five major Advice types.
+ */
+/**
+
+                              ADVICE
+                 (What code should execute?)
+
+                                   │
+         ┌─────────────────────────┼─────────────────────────┐
+         │                         │                         │
+         ▼                         ▼                         ▼
+     @Before                  @After                  @Around
+  Before Method            After Method        Before + After +
+      Executes               Executes          Controls Execution
+                                                           │
+                                                           │
+                                      ┌────────────────────┴────────────────────┐
+                                      │                                         │
+                                      ▼                                         ▼
+                             @AfterReturning                          @AfterThrowing
+                           After Successful Return                  After Exception
+
+
+                             Before
+                             Runs BEFORE method execution.
+
+                             After
+                             Runs AFTER method execution.
+
+                             Around
+                             Runs before and after the method.
+
+                             After Returning
+                             Runs only if method completes successfully.
+
+                             After Throwing
+                             Runs only when exception occurs.
 
 
 
-                 Advice
+                             METHOD EXECUTION
 
-                    │
+ @Before
+ │
+ ▼
+ Target Method
+ /      \
+ /        \
+ Success      Exception
+ │             │
+ ▼             ▼
+ @AfterReturning  @AfterThrowing
+ \        /
+ \      /
+ ▼    ▼
+ @After
 
-     ┌──────────────┼────────────────────┐
+ ═══════════════════════════════════════
+ @Around wraps EVERYTHING above.
+ ═══════════════════════════════════════
 
-     │              │                    │
+ */
 
-     ▼              ▼                    ▼
-
- Before          After            Around
-
-                    │
-
-          ┌─────────┴───────────┐
-
-          ▼                     ▼
-
- After Returning      After Throwing
-
-
-
-We will study
-
-every Advice
-
-in detail
-
-later.
-
-
-
-For now,
-
-remember only
-
-their purpose.
-
-
-
-Before
-
-Runs
-
-BEFORE
-
-method execution.
-
-
-
-After
-
-Runs
-
-AFTER
-
-method execution.
-
-
-
-Around
-
-Runs
-
-before
-
-and
-
-after
-
-the method.
-
-
-
-After Returning
-
-Runs
-
-only if
-
-method completes successfully.
-
-
-
-After Throwing
-
-Runs
-
-only when
-
-exception occurs.
-
-
+/*
+We will study every Advice in detail later.
+For now, remember only their purpose.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                       ASPECT vs ADVICE                                              ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
-
 
 ┌─────────────────────────────┬──────────────────────────────────────────────┐
 │ Aspect                      │ Advice                                       │
@@ -693,8 +677,6 @@ exception occurs.
 │ Example : LoggingAspect     │ beforeLog(), afterLog()                     │
 └─────────────────────────────┴──────────────────────────────────────────────┘
 
-
-
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                     COMMON INTERVIEW MISTAKES                                       ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
@@ -703,115 +685,60 @@ exception occurs.
 ❌ Mistake 1
 
 Aspect and Advice are the same.
-
-Wrong.
-
-
-Aspect
-
-is a Class.
-
-Advice
-
-is a Method.
-
-
-
+Wrong. Aspect is a Class. Advice is a Method.
 --------------------------------------------------------
-
 
 ❌ Mistake 2
 
 Aspect executes.
-
 Wrong.
-
-
 Advice executes.
-
 Aspect simply contains Advices.
-
-
-
 --------------------------------------------------------
-
 
 ❌ Mistake 3
 
-One Aspect contains only one Advice.
-
-Wrong.
-
-
-One Aspect
-
-can contain
-
-multiple Advices.
-
-
+One Aspect contains only one Advice. Wrong.
+One Aspect can contain multiple Advices.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                          INTERVIEW QUESTIONS                                        ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
+ */
+/**
 
 Q1
 
 What is an Aspect?
-
-
 Answer
-
 An Aspect is a Java class that encapsulates
 cross-cutting concerns such as logging,
 security, transactions, auditing, caching etc.
-
-
-
 ------------------------------------------------------
-
 
 Q2
 
 What is Advice?
 
-
 Answer
-
 Advice is the actual action
 executed by an Aspect
 at a specific Join Point.
-
-
-
 ------------------------------------------------------
-
 
 Q3
 
 Can one Aspect contain multiple Advices?
-
-
 Yes.
-
 This is very common in Spring Boot.
-
-
-
 Example
-
-
 LoggingAspect
 
         beforeLog()
-
         afterLog()
-
         executionTime()
-
-
-
+ */
+/*
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                            PART 1 COMPLETE                                          ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
@@ -820,15 +747,10 @@ LoggingAspect
 Next Part
 
 ✔ Join Point
-
 ✔ Pointcut
-
 ✔ Difference Between Join Point and Pointcut
-
 ✔ Target Object
-
 ✔ Proxy Object
-
 */
 
 /*
@@ -840,96 +762,95 @@ Next Part
 This is one of the **MOST CONFUSING** AOP terminologies.
 
 Many developers confuse
-
         Join Point
-
 with
-
         Pointcut.
-
 Let's understand it slowly.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                           OFFICIAL DEFINITION                                       ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 
-**A Join Point is a point during the execution of a program where
-additional behaviour can be applied.**
+ */
 
+/**
+A Join Point is any point during program execution where an Aspect can potentially execute an Advice.
+In Spring AOP, every method execution is a Join Point because Spring's proxy mechanism can
+intercept method executions and apply cross-cutting logic before, after, or around them.
 
+ A Join Point is a point during the execution of a program where
+ additional behaviour can be applied.
 
-Sounds difficult?
+ A Join Point is any place in your program where Spring AOP has the opportunity to execute an Advice.
 
-Let's simplify it.
+ A Join Point is a possible execution point where an Aspect can run.
 
+ Join Point = Opportunity
+ Spring sees an opportunity and asks:
+ "Do I need to execute any Advice here?"
+ If yes, it executes it.
 
+ Real Life Example
+ Imagine a shopping mall.
 
+ Every location is a place where a security guard could stand.
+ Those possible locations are like Join Points.
+ The guard doesn't have to stand everywhere.
+ He can stand there.
+ That's why they're called possible execution points.
+
+ note -
+
+ Join Point = Every possible place.
+ Pointcut    = The places we actually choose.
+ Advice      = The code executed at those chosen places.
+ */
+        /*
+
+Sounds difficult? Let's simplify it.
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                           SIMPLE DEFINITION                                         ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-
 Imagine a Java class.
 
+EmployeeService contains
 
+                 EmployeeService
 
-EmployeeService
+        +-----------------------------+
+        | saveEmployee()              |  ◄── Join Point
+        +-----------------------------+
 
+        +-----------------------------+
+        | updateEmployee()            |  ◄── Join Point
+        +-----------------------------+
 
+        +-----------------------------+
+        | deleteEmployee()            |  ◄── Join Point
+        +-----------------------------+
 
-contains
+        +-----------------------------+
+        | findEmployee()              |  ◄── Join Point
+        +-----------------------------+
 
+        +-----------------------------+
+        | calculateSalary()           |  ◄── Join Point
+        +-----------------------------+
 
-
-saveEmployee()
-
-updateEmployee()
-
-deleteEmployee()
-
-findEmployee()
-
-calculateSalary()
-
-
-
-Every method
-
-is a potential place
-
-where Spring can execute
-
-extra logic.
-
-
-
-Each such place
-
-is called
-
+Every method is a potential place where Spring can execute extra logic.
+Each such place is called
                 **Join Point**
 
-
-
 Simply remember
-
-
-
                 Join Point = Possible Execution Point
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                        VISUAL REPRESENTATION                                        ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-
-
                 EmployeeService
-
 
         ┌────────────────────────────┐
 
@@ -954,13 +875,7 @@ Simply remember
         └────────────────────────────┘
 
 
-Every ●
-
-represents
-
-a Join Point.
-
-
+Every ● represents a Join Point.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                         HRMS PROJECT EXAMPLE                                        ║
@@ -969,52 +884,24 @@ a Join Point.
 
 AttendanceService
 
-
-
 markAttendance()
-
 approveAttendance()
-
 rejectAttendance()
-
 generateAttendanceReport()
 
+Each method is a Join Point.
 
-
-Each method
-
-is a Join Point.
-
-
-
-Similarly
-
-
-
-LeaveService
-
-
+Similarly LeaveService
 
 applyLeave()
-
 approveLeave()
-
 cancelLeave()
-
 rejectLeave()
-
-
-
 Again,
 
-every method
-
-is a Join Point.
-
-
+every method is a Join Point.
 
 Think like this.
-
 
 Method exists
 
@@ -1023,12 +910,7 @@ Method exists
 Spring CAN intercept it
 
 ↓
-
-Therefore
-
-it is a Join Point.
-
-
+Therefore it is a Join Point.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                         IMPORTANT NOTE                                              ║
@@ -1040,75 +922,91 @@ it is a Join Point.
 In Spring AOP,
 
 Join Point means
-
                 **Method Execution**
 
 
-Spring AOP
-
-does NOT support
-
+Spring AOP does NOT support
 Constructor Execution
-
 Field Access
-
 Object Initialization
-
 Static Block Execution
 
+Those are supported by AspectJ.
 
-
-Those are supported
-
-by
-
-AspectJ.
-
-
-
-So during interviews,
-
-if someone asks
-
-
+So during interviews, if someone asks
 "What is a Join Point in Spring AOP?"
 
-
 Answer
-
-
 **Every method execution of a Spring-managed bean
 is a Join Point.**
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                            4. WHAT IS A POINTCUT ?                                  ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 
+         */
 
-Now comes
+/**
+ *        ------- POINTCUT
+A Pointcut selects Join Points.
+ A Pointcut is an expression that identifies one or more Join Points where an Advice should be applied.
 
-the second terminology.
+ or A Pointcut is a rule or filter that tells Spring at which Join Points an Advice should execute.
+ Pointcut = Selection Rule
+
+ All Methods
+ │
+ ▼
+ Join Points
+ │
+ ▼
+ Pointcut Filters
+ │
+ ▼
+ Selected Join Points
+ │
+ ▼
+ Advice Executes
+
+ A Pointcut is an expression or rule that selects specific Join Points where an Advice should execute.
+ While every method execution is a Join Point in Spring AOP, a Pointcut filters
+ those Join Points so that the Advice runs only for the methods that match the defined expression.
+
+ or
+ A Join Point is every possible interception point (method execution in Spring AOP),
+ while a Pointcut is the expression that selects which of those Join Points should execute an Advice.
 
 
+ EmployeeService
 
-Official Definition
+ save()        ◄── Join Point
+ update()      ◄── Join Point
+ delete()      ◄── Join Point
+ find()        ◄── Join Point
+ login()       ◄── Join Point
 
+ │
+ ▼
+ Pointcut Expression
+ (execution(* *Service.save*(..)))
 
+ │
+ ▼
+ save() Selected
 
-**A Pointcut is an expression that selects one or more Join Points.**
+ │
+ ▼
+ Advice Executes
 
+         */
+        /*
+Now comes the second terminology.
 
+A Pointcut is an expression that selects one or more Join Points.
 
 Still sounds difficult?
-
-
-
 Let's simplify.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                            SIMPLE DEFINITION                                        ║
@@ -1116,158 +1014,69 @@ Let's simplify.
 
 
 Suppose
-
-EmployeeService
-
-contains
-
+EmployeeService contains
 
 saveEmployee()
-
 updateEmployee()
-
 deleteEmployee()
-
 findEmployee()
-
 generateSalary()
 
+All of them are Join Points.
 
-
-All of them
-
-are Join Points.
-
-
-
-But suppose
-
-you only want logging
-
-for
-
-
-
-saveEmployee()
-
-and
-
-updateEmployee()
-
-
+But suppose you only want logging for saveEmployee()
+and updateEmployee()
 
 Question
 
-
-How will Spring know
-
-which methods
-
-should execute logging?
-
-
+How will Spring know which methods should execute logging?
 
 Answer
 
-
 Using
-
                 Pointcut
 
-
-
-Pointcut
-
-filters
-
-Join Points.
-
-
+Pointcut filters Join Points.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                          VISUAL REPRESENTATION                                      ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-
-
 All Join Points
 
 
-
 saveEmployee()          ●
-
 updateEmployee()        ●
-
 deleteEmployee()        ●
-
 findEmployee()          ●
-
 generateSalary()        ●
-
-
 
 Pointcut selects
 
 
 
 saveEmployee()          ✔
-
 updateEmployee()        ✔
-
-
-
 Remaining methods
 
-
-
 deleteEmployee()        ✘
-
 findEmployee()          ✘
-
 generateSalary()        ✘
 
 
-
-Only selected methods
-
-will execute Advice.
-
-
+Only selected methods will execute Advice.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                        REAL SPRING EXAMPLE                                          ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-
-
 @Before(
-
 "execution(* com.company.service.EmployeeService.saveEmployee(..))"
 
 )
 
-
-
-This expression
-
-is a
-
-Pointcut.
-
-
-
-It selects
-
-
-saveEmployee()
-
-
-
-from all available
-
-Join Points.
-
-
+This expression is a Pointcut.
+It selects saveEmployee() from all available Join Points.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                         ANOTHER REAL EXAMPLE                                        ║
@@ -1277,80 +1086,35 @@ Join Points.
 
 Suppose
 
-
-AttendanceService
-
-
-
-contains
-
+AttendanceService contains
 
 markAttendance()
-
 approveAttendance()
-
 rejectAttendance()
-
 downloadReport()
-
 deleteAttendance()
 
-
-
 Manager says
-
-
-Log only
-
-approval methods.
-
-
-
+Log only approval methods.
 Pointcut becomes
-
-
-
 approveAttendance()
-
-
-
 Only that Join Point
-
 will execute Advice.
-
-
 
 ASCII Diagram
 
-
-
 All Join Points
 
-
-
 markAttendance()          ●
-
 approveAttendance()       ●
-
 rejectAttendance()        ●
-
 downloadReport()          ●
-
 deleteAttendance()        ●
-
-
 
 Pointcut
 
-
-
 approveAttendance()       ✔
-
-
-
 Only one method selected.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                   JOIN POINT vs POINTCUT                                            ║
@@ -1506,12 +1270,8 @@ Answer
 A Join Point is a point during program execution
 where an Advice can potentially execute.
 In Spring AOP,
-
 every method execution
-
 is a Join Point.
-
-
 
 ------------------------------------------------------
 
@@ -1519,19 +1279,10 @@ is a Join Point.
 Q2
 
 What is Pointcut?
-
-
 Answer
 
-
 A Pointcut is an expression
-used to select
-
-one or more
-
-Join Points.
-
-
+used to select one or more Join Points.
 
 ------------------------------------------------------
 
@@ -1540,49 +1291,27 @@ Q3
 
 Which comes first?
 
-
 Join Point
-
 or
-
 Pointcut?
 
-
-
 Answer
-
-
 Join Points already exist.
-
 Pointcut selects
-
 some of them.
-
-
-
 ------------------------------------------------------
 
 
 Q4
 
 Can every Join Point
-
 execute Advice?
-
-
 
 No.
 
-
-Only the Join Points
-
-selected
-
+Only the Join Points selected
 by Pointcut
-
 will execute Advice.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                            PART 2 COMPLETE                                          ║
@@ -1614,331 +1343,130 @@ Next Part
 Now we know
 
         ✔ Aspect
-
         ✔ Advice
-
         ✔ Join Point
-
         ✔ Pointcut
-
 Now another question arises.
 
 
 Question
 
-Who actually executes
-
-the business logic?
-
-
+Who actually executes the business logic?
 
 Answer
-
-
 The
-
                 **Target Object**
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                         OFFICIAL DEFINITION                                         ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
+Target Object is the actual object whose methods are intercepted by Spring AOP.
 
-**Target Object is the actual object whose methods are intercepted by Spring AOP.**
-
-
-
-Simple Definition
-
-
-Target Object is simply
-
-your original class.
-
+Target Object is simply your original class.
 
 Examples
 
-
 EmployeeService
-
 AttendanceService
-
 LeaveService
-
 PayrollService
-
 CustomerService
 
-
-
 Spring never changes
-
 their business logic.
-
-
 Instead,
-
 Spring surrounds them
-
 with
-
 Proxy Objects.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                         VISUAL REPRESENTATION                                       ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-
-
                  EmployeeService
-
-
       saveEmployee()
-
       updateEmployee()
-
       deleteEmployee()
-
-
-
 This original object
-
 is called
-
                 Target Object.
-
-
-
-╔══════════════════════════════════════════════════════════════════════════════════════╗
-║                        HRMS PROJECT EXAMPLE                                         ║
-╚══════════════════════════════════════════════════════════════════════════════════════╝
-
-
-AttendanceService
-
-
-
-public void markAttendance(){}
-
-
-
-This method contains
-
-the actual attendance logic.
-
-
-
-Spring does NOT move
-
-this logic anywhere.
-
-
-
-AttendanceService
-
-remains
-
-the Target Object.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                        IMPORTANT NOTE                                               ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 
+ */
+
+/**
 **Remember**
 
-AOP
+AOP does NOT replace your service class.
+It simply adds another object before it.
 
-does NOT replace
-
-your service class.
-
-
-It simply
-
-adds another object
-
-before it.
-
-
-
-Target Object
-
-always contains
-
-the original
-
-business logic.
-
-
+Target Object always contains the original business logic.
+ */
+/*
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                           6. WHAT IS A PROXY OBJECT ?                               ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
-
-This is one of the
-
-MOST IMPORTANT
-
-concepts in Spring AOP.
-
-
-
-Almost everything
-
-inside Spring AOP
-
-depends upon
-
-Proxy Objects.
-
-
-
-If you understand Proxy,
-
-you understand
-
-Spring AOP.
-
-
+This is one of the MOST IMPORTANT concepts in Spring AOP.
+Almost everything inside Spring AOP depends upon Proxy Objects.
+If you understand Proxy, you understand Spring AOP.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                          OFFICIAL DEFINITION                                        ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 
-**A Proxy Object is an object created by Spring that stands between
-the client and the Target Object to apply additional behaviour.**
-
-
-
-╔══════════════════════════════════════════════════════════════════════════════════════╗
-║                          SIMPLE DEFINITION                                          ║
-╚══════════════════════════════════════════════════════════════════════════════════════╝
-
-
-Think of a Proxy as
-
-
-a middleman.
-
-
-
-Instead of
-
-
-Client
-
-calling
-
-
-EmployeeService
-
-
-
-directly,
-
-
-
-Client
-
-calls
-
-
-EmployeeServiceProxy.
-
-
-
-The Proxy decides
-
-
-Should Logging execute?
-
-Should Transaction begin?
-
-Should Security execute?
-
-Should Cache be checked?
-
-
-
-After completing them,
-
-the Proxy finally calls
-
-EmployeeService.
-
-
-
-╔══════════════════════════════════════════════════════════════════════════════════════╗
-║                         COMPLETE EXECUTION FLOW                                     ║
-╚══════════════════════════════════════════════════════════════════════════════════════╝
-
-
-
-                 Client
-
-                    │
-
-                    ▼
-
-         EmployeeServiceProxy
-
-                    │
-
-      ┌─────────────┼────────────────────┐
-
-      │             │                    │
-
-      ▼             ▼                    ▼
-
- Logging      Security         Transaction
-
-      │             │                    │
-
-      └─────────────┼────────────────────┘
-
-                    │
-
-                    ▼
-
-           EmployeeService
-
-                    │
-
-                    ▼
-
-               Database
-
-
-
-Notice
-
-
-Client
-
-never communicates
-
-directly
-
-with
-
-EmployeeService.
-
-
-
-Everything passes through
-
-the Proxy.
-
-
+ */
+/**
+********************** PROXY OBJECT **************
+A Proxy Object is an object created by Spring that stands between
+the client and the Target Object to apply additional behaviour.
+
+ Think of a Proxy as  a middleman. Instead of Client calling EmployeeService directly,
+ Client calls EmployeeServiceProxy.
+ The Proxy decides
+ Should Logging execute?
+ Should Transaction begin?
+ Should Security execute?
+ Should Cache be checked?
+ After completing them,
+ the Proxy finally calls
+ EmployeeService.
+
+ Client
+ │
+ │ 1. Calls saveEmployee()
+ ▼
+ Spring AOP Proxy
+ │
+ ├──► Before Logging Advice
+ │
+ ├──► Before Security Advice
+ │
+ ├──► Begin Transaction
+ │
+ ├──► Execute EmployeeService.saveEmployee()
+ │
+ ├──► Commit / Rollback Transaction
+ │
+ ├──► After Logging Advice
+ │
+ ▼
+ Return Result to Client
+
+
+ Notice
+ Client
+ never communicates directly with EmployeeService. Everything passes through the Proxy.
+
+ */
+
+/*
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                    REAL LIFE ANALOGY                                                ║
@@ -1946,32 +1474,16 @@ the Proxy.
 
 
 Imagine
-
-
 CEO of a company.
-
-
-
 Can every employee
-
 directly meet
-
 the CEO?
-
 
 NO.
 
-
-
 Employees first meet
-
-
 Secretary.
-
-
-
 Secretary checks
-
 
 Appointment
 
@@ -1990,10 +1502,7 @@ Availability
 
 
 Only then
-
 CEO is called.
-
-
 
 ASCII Diagram
 
@@ -2027,19 +1536,9 @@ CEO
 
 
 
-CEO
+CEO = Target Object
 
-=
-
-Target Object
-
-
-
-Secretary
-
-=
-
-Proxy Object.
+Secretary = Proxy Object.
 
 
 
@@ -2051,49 +1550,18 @@ Proxy Object.
 Suppose
 
 
-AttendanceService
-
-
-
-contains
-
-
-
-markAttendance()
-
-
-
+AttendanceService contains markAttendance()
 Now
 
-@Transactional
-
-is added.
-
-
+@Transactional is added.
 
 Question
 
-
-Will Spring modify
-
-AttendanceService?
-
-
-
-NO.
-
-
+Will Spring modify AttendanceService?   NO.
 
 Spring creates
-
-
-
 AttendanceServiceProxy
-
-
-
 Execution Flow
-
 
 
 Controller
@@ -2131,16 +1599,7 @@ Commit
 Return Response
 
 
-
-This is exactly
-
-how Spring
-
-implements
-
-@Transactional.
-
-
+This is exactly how Spring implements @Transactional.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                     WHY DOES SPRING NEED A PROXY ?                                  ║
@@ -2148,53 +1607,19 @@ implements
 
 
 Without Proxy
+Client calls EmployeeService directly.
 
-
-Client
-
-calls
-
-EmployeeService
-
-directly.
-
-
-
-No place exists
-
-to execute
-
+No place exists to execute
 Logging
-
 Security
-
 Transactions.
 
-
-
-Proxy solves
-
-this problem.
-
-
-
-It inserts itself
-
-between
-
-Client
-
-and
-
-Target Object.
-
-
+Proxy solves this problem.
+It inserts itself between Client and Target Object.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                        WITHOUT PROXY                                                ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
-
 
 Client
 
@@ -2210,17 +1635,11 @@ EmployeeService
 
 Database
 
-
-
 No interception.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                         WITH PROXY                                                  ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
-
 
 Client
 
@@ -2256,20 +1675,11 @@ Database
 
 
 
-Now
-
-Spring can execute
-
-additional behaviour.
-
-
+Now Spring can execute additional behaviour.
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                   TARGET OBJECT vs PROXY OBJECT                                     ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
-
-
-
 ┌────────────────────────────┬────────────────────────────────────────────────┐
 │ Target Object              │ Proxy Object                                   │
 ├────────────────────────────┼────────────────────────────────────────────────┤
@@ -2285,23 +1695,21 @@ additional behaviour.
 └────────────────────────────┴────────────────────────────────────────────────┘
 
 
-
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                          INTERVIEW QUESTIONS                                        ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
 
+
+ */
+/**
 Q1
 
 What is Target Object?
-
-
 Answer
 
 Target Object is the original Spring bean
 whose methods are intercepted by Spring AOP.
-
-
 
 ----------------------------------------------------------
 
@@ -2310,15 +1718,12 @@ Q2
 
 What is Proxy Object?
 
-
 Answer
 
 A Proxy Object is a Spring-generated object
 that sits between the client and the target object
 to execute additional behaviour like logging,
 transactions, caching, security etc.
-
-
 
 ----------------------------------------------------------
 
@@ -2327,13 +1732,10 @@ Q3
 
 Who creates Proxy Objects?
 
-
 Answer
 
 Spring Framework creates Proxy Objects
 during bean creation.
-
-
 
 ----------------------------------------------------------
 
@@ -2341,35 +1743,22 @@ during bean creation.
 Q4
 
 Can Client directly call Target Object?
-
-
 Practically,
-
 No.
-
 Client usually receives
-
 the Proxy Bean
-
 from the Spring IOC Container.
-
-
-
+ */
+/*
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                              PART 3 COMPLETE                                       ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-
 Next Part
-
 ✔ Weaving
-
 ✔ Advisor
-
 ✔ Complete Relationship Diagram
-
 ✔ Chapter Summary
-
 ✔ Interview Cheat Sheet
 
 */
@@ -2382,56 +1771,29 @@ Next Part
 
 After understanding
 
-        ✔ Aspect
-
+        ✔ Aspec
         ✔ Advice
-
         ✔ Join Point
-
         ✔ Pointcut
-
         ✔ Target Object
-
         ✔ Proxy Object
-
 one question naturally comes into our mind.
 
-
 Question
-
-
-How does Spring connect
-
-Aspect
-
-with
-
-Target Object?
-
-
-
+How does Spring connect Aspect with Target Object?
 The answer is
-
                 **Weaving**
-
 
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                           OFFICIAL DEFINITION                                       ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-
-**Weaving is the process of connecting an Aspect with a Target Object
-to create an advised object.**
-
-
+Weaving is the process of connecting an Aspect with a Target Object
+to create an advised object.
 
 Sounds complicated?
-
-
 Let's simplify.
-
-
 
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                           SIMPLE DEFINITION                                         ║
