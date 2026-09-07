@@ -84,6 +84,20 @@ SIMPLE DEFINITION
 Executor is high-level abstraction
 for executing tasks asynchronously.
 
+                 ExecutorService
+                       |
+                 Thread Pool
+              /        |        \
+          Thread 1   Thread 2   Thread 3
+              |         |          |
+            Task 1    Task 2     Task 3
+
+Tum mujhe TASK do, main THREADS manage karunga.
+
+you -> task submit -> executer-> thread pool-> available thread-> task execute
+
+Task execution ko thread management se separate karo.
+
 ========================================================================
 MAIN IDEA
 ========================================================================

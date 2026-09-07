@@ -96,6 +96,21 @@ lock() blocks thread until lock becomes available,
 whereas tryLock() tries to acquire lock immediately
 and returns false if lock is unavailable instead of waiting.
 
+tryLock() ka purpose hi hai "agar abhi lock mil raha hai to le lo,
+warna main doosra kaam karunga
+
+
+Thread A → LOCKED
+
+Thread B → tryLock()
+              ↓
+         Lock available?
+           ↙       ↘
+         YES        NO
+          ↓          ↓
+     get lock    return false
+                    ↓
+                do something else
 ========================================================================
 
 */
